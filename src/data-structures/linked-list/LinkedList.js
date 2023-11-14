@@ -68,7 +68,7 @@ export default class LinkedList {
       let currentNode = this.head;
       const newNode = new LinkedListNode(value);
       while (currentNode) {
-        if (count === index) break;
+        if (count === index) break; // this means currentNode now points to the index-1 node to which next needs to be the newly inserted node.
         currentNode = currentNode.next;
         count += 1;
       }
@@ -242,31 +242,41 @@ export default class LinkedList {
     return this.toArray().map((node) => node.toString(callback)).toString();
   }
 
+  reverseRec(node = this.head, prev = null) {
+    if (node === null) return prev;
+    const next = node.next;
+    node.next = prev;
+    return this.reverseRec(next, node);
+  }
   /**
    * Reverse a linked list.
    * @returns {LinkedList}
    */
   reverse() {
-    let currNode = this.head;
-    let prevNode = null;
-    let nextNode = null;
+    this.reverseRec();
+    const temp = this.head;
+    this.head = this.tail;
+    this.tail = temp;
+    // let currNode = this.head;
+    // let prevNode = null;
+    // let nextNode = null;
 
-    while (currNode) {
-      // Store next node.
-      nextNode = currNode.next;
+    // while (currNode) {
+    //   // Store next node.
+    //   nextNode = currNode.next;
 
-      // Change next node of the current node so it would link to previous node.
-      currNode.next = prevNode;
+    //   // Change next node of the current node so it would link to previous node.
+    //   currNode.next = prevNode;
 
-      // Move prevNode and currNode nodes one step forward.
-      prevNode = currNode;
-      currNode = nextNode;
-    }
+    //   // Move prevNode and currNode nodes one step forward.
+    //   prevNode = currNode;
+    //   currNode = nextNode;
+    // }
 
-    // Reset head and tail.
-    this.tail = this.head;
-    this.head = prevNode;
+    // // Reset head and tail.
+    // this.tail = this.head;
+    // this.head = prevNode;
 
-    return this;
+    // return this;
   }
 }
